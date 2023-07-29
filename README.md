@@ -22,6 +22,18 @@ wget https://github.com/AlexxIT/go2rtc/releases/download/v1.6.2/go2rtc_linux_amd
 chmod a+x go2rtc_linux_amd64
 ```
 
+# BUILD - SCRIPTS
+```
+scripts/build_all.sh : build it all
+
+--> scripts/get_deps.sh : downloads dependencies 
+--> scripts/build_bin.sh : compiles the binary with a gcc container
+--> scripts/build_container.sh : builds the container to run
+
+
+scripts/run_container.sh : starts the container in podman
+```
+
 # BUILD
 replace `podman` with `docker` if that's what you're running. 
 
