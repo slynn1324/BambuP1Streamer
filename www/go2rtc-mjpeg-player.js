@@ -149,6 +149,11 @@ export class Go2RTCMJpegPlayer extends HTMLElement {
 	wsOnMessage(msg){
 		if ( typeof(msg.data) === 'string' ){
 			console.log("message", msg);
+		
+			let parsed = JSON.parse(msg.data);
+			if ( parsed.type == "error" ){
+				this.timestamp.innerText = "error: " + parsed.value;
+			}
 		} else {
 			this.img.src = 'data:image/jpeg;base64,' + this.btoa(msg.data);
 
