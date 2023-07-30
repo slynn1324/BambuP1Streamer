@@ -1,5 +1,3 @@
-// adapt the Go2RTCMJpegPlayer into a Home Assistant card
-
 export class Go2RTCMJpegPlayer extends HTMLElement {
 
 	constructor() {
@@ -19,7 +17,7 @@ export class Go2RTCMJpegPlayer extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['src', 'imgStyle'];
+		return ['src'];
 	}
 
 	connectedCallback() {
@@ -70,9 +68,11 @@ export class Go2RTCMJpegPlayer extends HTMLElement {
 			}
 
 			// if we have an initial src, handle it
-			if ( this.src ){
+			if ( this.src && this.autoplay ){
 				this.onSrcChanged(this.src);
-			}
+			} else {
+                this.stop();
+            }
 
 			this.initialized = true;
 		}
@@ -92,6 +92,10 @@ export class Go2RTCMJpegPlayer extends HTMLElement {
 		}
 
 	}
+
+    get autoplay(){
+        return this.getAttribute("autoplay");
+    }
 
 	get src() {
 		return this.getAttribute("src");
