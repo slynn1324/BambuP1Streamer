@@ -75,8 +75,17 @@ export class Go2RTCMJpegPlayer extends HTMLElement {
             }
 
 			this.initialized = true;
+		} else {
+			if ( this.src && this.autoplay ){
+				this.onSrcChanged(this.src);
+			}
 		}
 		
+	}
+
+	disconnectedCallback() {
+		console.log("disconnected");
+		this.stop();
 	}
 
 	attributeChangedCallback(attrName, oldVal, newVal) {
