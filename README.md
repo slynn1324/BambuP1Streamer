@@ -21,7 +21,7 @@ scripts/build_all.sh : build it all
 --> scripts/build_container.sh : builds the container to run
 
 
-scripts/run_container.sh : starts the container in podman
+scripts/run_container.sh <PRINTER_ADDRESS> <PRINTER_ACCESS_CODE> : starts the container in podman
 ```
 
 ## Quickstart
