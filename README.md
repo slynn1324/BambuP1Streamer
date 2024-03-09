@@ -8,7 +8,23 @@ Derived from https://github.com/hisptoot/BambuSource2Raw.
 
 https://github.com/AlexxIT/go2rtc does most of the work.
 
-# Quickstart
+# AUTOMATED BUILDING
+
+This section is for the TL;DR approach.
+
+## BUILD - SCRIPTS OVERVIEW
+```
+scripts/build_all.sh : build it all
+
+--> scripts/get_deps.sh : downloads dependencies 
+--> scripts/build_bin.sh : compiles the binary with a gcc container
+--> scripts/build_container.sh : builds the container to run
+
+
+scripts/run_container.sh : starts the container in podman
+```
+
+## Quickstart
 
 This is an example on how to get the stack running ASAP. In this example we use Podman (as the more secure Docker replacement), Debian / Ubuntu and Chromium.
 
@@ -22,7 +38,12 @@ cd BambuP1Streamer
 open http://localhost:1984
 ```
 
-# DEPENDENCIES
+
+# MANUAL BUILDING
+
+This section is going through all the steps manually one by one.
+
+## DEPENDENCIES
 
 Bambu Studio Proprietary Plugin Library
 ```
@@ -36,38 +57,26 @@ wget https://github.com/AlexxIT/go2rtc/releases/download/v1.6.2/go2rtc_linux_amd
 chmod a+x go2rtc_linux_amd64
 ```
 
-# BUILD - SCRIPTS
-```
-scripts/build_all.sh : build it all
-
---> scripts/get_deps.sh : downloads dependencies 
---> scripts/build_bin.sh : compiles the binary with a gcc container
---> scripts/build_container.sh : builds the container to run
-
-
-scripts/run_container.sh : starts the container in podman
-```
-
-# BUILD
+## BUILD
 replace `podman` with `docker` if that's what you're running. 
 
-## build binary
+### build binary
 ```
 podman run --rm -v $(pwd):/work docker.io/gcc:12 gcc /work/src/BambuP1Streamer.cpp -o /work/BambuP1Streamer 
 ```
 
-## build container
+### build container
 ```
 podman build -t bambu_p1_streamer .
 ```
 
-# RUN
+## RUN
 Plug in the right values for the environment variables
 ```
 podman run -d --name bambu_p1_streamer -p 1984:1984 -e PRINTER_ADDRESS=192.168.12.34 -e PRINTER_ACCESS_CODE=12345678 bambu_p1_streamer
 ```
 
-# ACCESS
+## ACCESS
 ### Index Page (only the MJPEG parts will work)
 ```
 http://<host>:1984/links.html?src=p1s
