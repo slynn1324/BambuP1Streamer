@@ -8,6 +8,20 @@ Derived from https://github.com/hisptoot/BambuSource2Raw.
 
 https://github.com/AlexxIT/go2rtc does most of the work.
 
+# Quickstart
+
+This is an example on how to get the stack running ASAP. In this example we use Podman (as the more secure Docker replacement), Debian / Ubuntu and Chromium.
+
+```
+sudo apt update
+sudo apt install podman
+git clone https://github.com/slynn1324/BambuP1Streamer.git
+cd BambuP1Streamer
+./scripts/build_all.sh
+./scripts/run_container.sh 192.168.1.33 12345678
+open http://localhost:1984
+```
+
 # DEPENDENCIES
 
 Bambu Studio Proprietary Plugin Library
@@ -54,17 +68,17 @@ podman run -d --name bambu_p1_streamer -p 1984:1984 -e PRINTER_ADDRESS=192.168.1
 ```
 
 # ACCESS
-###Index Page (only the MJPEG parts will work)
+### Index Page (only the MJPEG parts will work)
 ```
 http://<host>:1984/links.html?src=p1s
 ```
 
-###MJPEG url
+### MJPEG url
 ```
 http://norm:1984/api/stream.mjpeg?src=p1s
 ```
 
-###WebSocket
+### WebSocket
 go2rtc has a unique feature for "mjpeg-over-websocket" that may demonstrate lower latency and better control than a regular MJPEG image in a browser.  This however will require creating a custom player (TODO) to leverage, but could better emulate a video control. 
 
 WebSocket url:
@@ -82,5 +96,7 @@ WebSocket pseudo-code:
 5) disconnect web socket to stop
 ```
 
+# Troubleshooting
 
-
+### Bambu_Open failed: 0xffffff9b
+This error on the containers output seems to occur when the PRINTER_ADDRESS destination is somehow unreachable.
