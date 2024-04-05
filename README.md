@@ -109,3 +109,6 @@ WebSocket pseudo-code:
 
 ### Bambu_Open failed: 0xffffff9b
 This error on the containers output seems to occur when the PRINTER_ADDRESS destination is somehow unreachable.
+
+### [1] [BambuTunnel::read_sample] error [1]
+This error on the containers output seems to occur when the PRINTER_ACCESS_CODE is not correct.
