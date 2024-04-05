@@ -112,3 +112,6 @@ This error on the containers output seems to occur when the PRINTER_ADDRESS dest
 
 ### [1] [BambuTunnel::read_sample] error [1]
 This error on the containers output seems to occur when the PRINTER_ACCESS_CODE is not correct.
+
+### Harmless errors on http://localhost:1984/stream.html?src=p1s
+Sometimes a few error messages appear before the stream starts. One would just wait a few more seconds.
