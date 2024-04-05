@@ -7,7 +7,7 @@ COPY src/BambuTunnel.h /build/src/
 
 RUN mkdir -p /build/deps
 WORKDIR /build/deps
-RUN wget https://public-cdn.bambulab.com/upgrade/studio/plugins/01.04.00.15/linux_01.04.00.15.zip
+RUN curl -OJ https://public-cdn.bambulab.com/upgrade/studio/plugins/01.04.00.15/linux_01.04.00.15.zip
 RUN unzip linux_01.04.00.15.zip
 
 RUN gcc /build/src/BambuP1Streamer.cpp -o /build/out/BambuP1Streamer
@@ -18,7 +18,7 @@ RUN gcc /build/src/BambuP1Streamer.cpp -o /build/out/BambuP1Streamer
 FROM debian:12
 
 RUN apt update && apt install -y \
- wget \
+ curl \
  && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /app
@@ -35,7 +35,7 @@ RUN echo \
 > /app/go2rtc.yaml
 
 WORKDIR /app
-RUN wget https://github.com/AlexxIT/go2rtc/releases/download/v1.6.2/go2rtc_linux_amd64
+RUN curl -OJ https://github.com/AlexxIT/go2rtc/releases/download/v1.6.2/go2rtc_linux_amd64
 RUN chmod +x go2rtc_linux_amd64
 
 WORKDIR /app
