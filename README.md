@@ -1,3 +1,7 @@
+# Credit
+
+Thanks goes to slynn1324 for putting this all together.
+
 # Bambu P1 Camera Streamer
 
 Only tested on a P1S. I would expect it to work for a p1p camera. I would not expect this to work on an X1/X1C - the codecs are different and I don't believe that local network streaming is enabled. 
@@ -12,18 +16,6 @@ https://github.com/AlexxIT/go2rtc does most of the work.
 
 This section is for the TL;DR approach.
 
-## BUILD - SCRIPTS OVERVIEW
-```
-scripts/build_all.sh : build it all
-
---> scripts/get_deps.sh : downloads dependencies 
---> scripts/build_bin.sh : compiles the binary with a gcc container
---> scripts/build_container.sh : builds the container to run
-
-
-scripts/run_container.sh <PRINTER_ADDRESS> <PRINTER_ACCESS_CODE> : starts the container in podman
-```
-
 ## Quickstart
 
 This is an example on how to get the stack running ASAP. In this example we use Podman (as the more secure Docker replacement), Debian / Ubuntu and Chromium.
@@ -33,8 +25,8 @@ sudo apt update
 sudo apt install podman
 git clone https://github.com/slynn1324/BambuP1Streamer.git
 cd BambuP1Streamer
-./scripts/build_all.sh
-./scripts/run_container.sh 192.168.1.33 12345678
+podman build -t bambu_p1_streamer .
+podman run --name bambu_p1_streamer -p 1984:1984 -e PRINTER_ADDRESS=10.1.1.13 -e PRINTER_ACCESS_CODE=24952313 localhost/bambu_p1_streamer
 open http://localhost:1984
 ```
 
