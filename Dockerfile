@@ -1,6 +1,7 @@
 FROM docker.io/gcc:12 as build
 
 RUN mkdir -p /build/src
+RUN mkdir -p /build/out
 COPY src/BambuP1Streamer.cpp /build/src/
 COPY src/BambuTunnel.h /build/src/
 
@@ -15,9 +16,14 @@ RUN gcc /build/src/BambuP1Streamer.cpp -o /build/out/BambuP1Streamer
 #ENV PRINTER_ACCESS_CODE
 
 FROM debian:12
+
+RUN apt update && apt install -y \
+ wget \
+ && rm -rf /var/lib/apt/lists/*
+
 RUN mkdir -p /app
 
-COPY --from=build build/BambuP1Streamer build/libBambuSource.so /app/
+COPY --from=build /build/out/BambuP1Streamer /build/deps/libBambuSource.so /app/
 
 RUN echo \
 'streams:\n'\
