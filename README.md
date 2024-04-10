@@ -1,7 +1,3 @@
-# Credit
-
-Thanks goes to slynn1324 for putting this all together.
-
 # Bambu P1 Camera Streamer
 
 Only tested on a P1S. I would expect it to work for a p1p camera. I would not expect this to work on an X1/X1C - the codecs are different and I don't believe that local network streaming is enabled. 
