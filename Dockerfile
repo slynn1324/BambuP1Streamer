@@ -29,7 +29,7 @@ RUN echo \
 'streams:\n'\
 '   p1s: "exec:./BambuP1Streamer ./libBambuSource.so ${PRINTER_ADDRESS} ${PRINTER_ACCESS_CODE}"\n'\
 'log:\n'\
-'  level: debug\n'\
+'  level: info\n'\
 'api:\n'\
 '  origin: "*"\n'\
 > /app/go2rtc.yaml
