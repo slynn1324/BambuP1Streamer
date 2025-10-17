@@ -32,7 +32,7 @@ static void* get_function(const char* name)
     function = (void *)dlsym(module, name);
 #endif
 
-    if (!function) 
+    if (!function)
     {
         fprintf(stderr, ", can not find function %s", name);
         exit(-1);
@@ -106,18 +106,18 @@ int start_bambu_stream(char *camera_url)
         }
 
         int result = 0;
-        while (true) 
+        while (true)
         {
             Bambu_Sample sample;
             result = lib.Bambu_ReadSample(tunnel, &sample);
 
-            if (result == Bambu_success) 
+            if (result == Bambu_success)
             {
                 fwrite(sample.buffer, 1, sample.size, stdout);
                 fflush(stdout);
                 continue;
-            } 
-            else if (result == Bambu_would_block) 
+            }
+            else if (result == Bambu_would_block)
             {
 #if defined(_MSC_VER) || defined(_WIN32)
                 Sleep(100);
@@ -125,13 +125,13 @@ int start_bambu_stream(char *camera_url)
                 usleep(100 * 1000);
 #endif
                 continue;
-            } 
-            else if (result == Bambu_stream_end) 
+            }
+            else if (result == Bambu_stream_end)
             {
                 fprintf(stderr, "Bambu_stream_end\n");
                 result = 0;
-            } 
-            else 
+            }
+            else
             {
                 result = -1;
                 fprintf(stderr, "ERROR_PIPE\n");
@@ -208,12 +208,12 @@ int main(int argc, char* argv[]){
     snprintf(camera_url, 256, "bambu:///local/%s.?port=6000&user=bblp&passwd=%s", printerAddress, accessCode);
 
     module = dlopen(bambuLibPath, RTLD_LAZY);
-	if (module == NULL)
+    if (module == NULL)
     {
         fprintf(stderr, "Failed loading libBambuSource.so at path %s\n", bambuLibPath);
         return -1;
     }
-	GET_FUNC(Bambu_Init);
+    GET_FUNC(Bambu_Init);
     GET_FUNC(Bambu_Deinit);
     GET_FUNC(Bambu_Create);
     GET_FUNC(Bambu_Destroy);
@@ -229,7 +229,7 @@ int main(int argc, char* argv[]){
     GET_FUNC(Bambu_GetDuration);
     GET_FUNC(Bambu_GetStreamInfo);
 
-	start_bambu_stream(camera_url);
+    start_bambu_stream(camera_url);
 
-	return 0;
+    return 0;
 }
