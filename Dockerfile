@@ -1,4 +1,4 @@
-FROM docker.io/gcc:12 as build
+FROM docker.io/gcc:12 AS build
 
 RUN mkdir -p /build/src
 RUN mkdir -p /build/out
@@ -27,7 +27,7 @@ COPY --from=build /build/out/BambuP1Streamer /build/deps/libBambuSource.so /app/
 
 RUN echo \
 'streams:\n'\
-'   p1s: "exec:./BambuP1Streamer ./libBambuSource.so ${PRINTER_ADDRESS} ${PRINTER_ACCESS_CODE}"\n'\
+'   p1s: "exec:./BambuP1Streamer"\n'\
 'log:\n'\
 '  level: info\n'\
 'api:\n'\

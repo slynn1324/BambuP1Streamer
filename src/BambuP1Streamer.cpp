@@ -6,6 +6,11 @@
 #include <unistd.h>
 #include <dlfcn.h>
 #include <cstdlib>
+#include <limits.h>
+#include <string.h>
+#ifndef PATH_MAX
+#define PATH_MAX 4096
+#endif
 
 #define BAMBUE_START_STREAM_RETRY_COUNT (40)
 
@@ -151,27 +156,58 @@ int start_bambu_stream(char *camera_url)
 }
 
 int main(int argc, char* argv[]){
+    if (argc > 4) {
+        fprintf(stderr, "Usage: %s [<libBambuSource.so path> [<printer address> [<access code>]]]\n", argv[0]);
+        return 1;
+    }
 
-	if ( argc != 4 ){
-		printf("Usage: %s <libBambuSource.so path> <printer address> <access code>", argv[0]);
-		exit(1);
-	}
+    char defaultLibPath[PATH_MAX] = "./libBambuSource.so";
+    char resolvedExecPath[PATH_MAX];
+    if (realpath(argv[0], resolvedExecPath) != NULL) {
+        char* lastSlash = strrchr(resolvedExecPath, '/');
+        if (lastSlash) {
+            *(lastSlash + 1) = '\0';
+            snprintf(defaultLibPath, sizeof(defaultLibPath), "%slibBambuSource.so", resolvedExecPath);
+        }
+    }
 
-	char* bambuLibPath = argv[1];
-	char* printerAddress = argv[2];
-	char* accessCode = argv[3];
+    const char* bambuLibPath = defaultLibPath;
+    const char* printerAddress = getenv("PRINTER_ADDRESS");
+    const char* accessCode = getenv("PRINTER_ACCESS_CODE");
 
-	fprintf(stderr, "Starting Bambu Camera Tunnel\n");
-	fprintf(stderr, "  libBambuSource.so path: %s\n", bambuLibPath);
-	fprintf(stderr, "  printAddress: %s\n", printerAddress);
-	fprintf(stderr, "  accessCode: %s\n\n", accessCode);
+    if (argc >= 2 && argv[1][0] != '\0') {
+        bambuLibPath = argv[1];
+    }
+    if (argc >= 3 && argv[2][0] != '\0') {
+        printerAddress = argv[2];
+    }
+    if (argc >= 4 && argv[3][0] != '\0') {
+        accessCode = argv[3];
+    }
 
+    if (!bambuLibPath || bambuLibPath[0] == '\0') {
+        fprintf(stderr, "Unable to resolve libBambuSource.so path. Provide it explicitly as the first argument.\n");
+        return 1;
+    }
+    if (!printerAddress || printerAddress[0] == '\0') {
+        fprintf(stderr, "Printer address is required. Supply PRINTER_ADDRESS or pass it as the second argument.\n");
+        return 1;
+    }
+    if (!accessCode || accessCode[0] == '\0') {
+        fprintf(stderr, "Access code is required. Supply PRINTER_ACCESS_CODE or pass it as the third argument.\n");
+        return 1;
+    }
 
-	char camera_url[256];
-	
-	snprintf(camera_url, 256, "bambu:///local/%s.?port=6000&user=bblp&passwd=%s", printerAddress, accessCode);
+    fprintf(stderr, "Starting Bambu Camera Tunnel\n");
+    fprintf(stderr, "  libBambuSource.so path: %s\n", bambuLibPath);
+    fprintf(stderr, "  printerAddress: %s\n", printerAddress);
+    fprintf(stderr, "  accessCode: %s\n\n", accessCode);
 
-	module = dlopen(bambuLibPath, RTLD_LAZY);
+    char camera_url[256];
+
+    snprintf(camera_url, 256, "bambu:///local/%s.?port=6000&user=bblp&passwd=%s", printerAddress, accessCode);
+
+    module = dlopen(bambuLibPath, RTLD_LAZY);
 	if (module == NULL)
     {
         fprintf(stderr, "Failed loading libBambuSource.so at path %s\n", bambuLibPath);
@@ -197,5 +233,3 @@ int main(int argc, char* argv[]){
 
 	return 0;
 }
-
-
