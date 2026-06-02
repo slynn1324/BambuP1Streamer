@@ -35,7 +35,7 @@ RUN echo \
 > /app/go2rtc.yaml
 
 WORKDIR /app
-RUN curl -LOJ https://github.com/AlexxIT/go2rtc/releases/download/v1.6.2/go2rtc_linux_amd64
+RUN curl -LOJ https://github.com/AlexxIT/go2rtc/releases/download/v1.9.14/go2rtc_linux_amd64
 RUN chmod +x go2rtc_linux_amd64
 
 WORKDIR /app
